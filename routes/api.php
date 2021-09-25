@@ -15,6 +15,4 @@ use App\Http\Controllers\UsersController;
 |
 */
 
-Route::resource('users', 'UsersController', ['only' => ['index', 'show', 'edit', 'update']]);
-
-Route::resource('tweets', 'TweetsController', ['only' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']]);
+Route::apiResource('/user',UsersController::class);

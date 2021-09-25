@@ -18,11 +18,10 @@ class UsersController extends Controller
      */
     public function index(User $user)
     {
-        $all_users = $user->getAllUsers(auth()->user->id);
-
-        return view('users.index', [
-            'all_users' => $all_users
-        ]);
+        $items = User::all();
+        return response()->json([
+            'data' => $items
+        ], 200);
     }
 
     /**
@@ -33,7 +32,10 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $item = User::create($request->all());
+        return response()->json([
+            'data' => $item
+        ], 201);
     }
 
     /**
@@ -44,19 +46,16 @@ class UsersController extends Controller
      */
     public function show(User $user)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, User $user)
-    {
-        //
+        $item = User::find($user);
+        if($item){
+            return response()->json([
+                'data' => $item
+            ], 200);
+        }else {
+            return response()->json([
+                'message' => 'Not Found',
+            ], 404);
+        }
     }
 
     /**
@@ -67,6 +66,15 @@ class UsersController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $item = User::where(id, $user->id)->delete();
+        if($item){
+            return response()->json([
+                'message' => 'Delete Succesfully',
+            ], 200);
+        }else{
+            return response()->json([
+                'message' => 'Not found',
+            ], 404);
+        }
     }
 }
